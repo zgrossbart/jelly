@@ -92,6 +92,7 @@ NARDOVE.Jelly.prototype.init = function() {
 	this.path.smooth();
 	this.path.style = this.pathStyle;
 //    this.path.blendMode = "darken";
+	this.path.opacity = 0.8;
 	this.group.addChild(this.path);
 
 
