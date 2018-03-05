@@ -1,0 +1,98 @@
+html, body {
+	margin: 0px;
+	border: 0px;
+	padding: 0px;
+	height: 100%;
+	/*background-color: #fcfcfc;*/
+	overflow: hidden;
+	font-family: 'Raleway', sans-serif;
+	/*font-size: 12pt;*/
+	color: #000;
+}
+
+
+#canvas {
+	margin: 0px;
+	padding: 0px;
+	/*pointer-events: none;*/
+	display: block;
+	position: absolute;
+	/*z-index: -1;*/
+	background-color: #fcfcfc;
+}
+
+
+
+.container {
+	max-width: 800px;
+	width: auto;
+}
+
+
+#wrap {
+	min-height: 100%;
+    pointer-events: visible;
+}
+
+#main {
+	overflow: auto;
+	/*padding-top: 70px;*/
+	padding-bottom: 150px;
+}
+
+
+.bold-title-text {
+	font-size: 18pt;
+	font-weight: 900;
+}
+
+.smaller-title-text {
+	font-size: 16pt;
+	font-weight: 400;
+}
+
+
+.description {
+	margin-top: 20px;
+	margin-bottom: 20px;
+	font-size: 9pt;
+}
+
+
+.code-text {
+	font-family: 'Source Code Pro', sans-serif;
+	font-size: 11pt;
+}
+
+
+.footer {
+	position: relative;
+	/*padding-top: 20px;*/
+	margin-top: -120px;
+	height: 100%;
+	clear: both;
+    pointer-events: auto;
+}
+
+.footer-icon {
+	width: 35px;
+	height: 35px;
+	margin-right: 10px;
+}
+
+/* latin-ext */
+@font-face {
+  font-family: 'Raleway';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Raleway'), local('Raleway-Regular'), url(http://fonts.gstatic.com/s/raleway/v12/1Ptug8zYS_SKggPNyCMIT4ttDfCmxA.woff2) format('woff2');
+  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Raleway';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Raleway'), local('Raleway-Regular'), url(http://fonts.gstatic.com/s/raleway/v12/1Ptug8zYS_SKggPNyC0IT4ttDfA.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
