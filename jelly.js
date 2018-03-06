@@ -30,9 +30,11 @@ JELLYFISH.Jelly = function(idNumber, radius, resolution) {
 		fillColor: this.colours[idNumber].f
 	};
 	
-	this.side = Math.floor(Math.random() * 4) + 1;
-	
-	
+	/* 
+	 * We start by randomly determining which side of the screen this jellyfish
+	 * will enter from.
+	 */
+	this.side = Math.floor(Math.random() * 4) + 1;	
 	switch (this.side) {
 	case 1: //left side
 		this.location = new Point(-50, Math.random() * view.size.height);
