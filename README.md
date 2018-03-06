@@ -11,4 +11,4 @@ If you want to play with it just clone the repository and open the `index.html` 
 
 You can also try it out live:  [zgrossbart.github.com/jelly](http://zgrossbart.github.com/jelly)
 
-![Jellyfish screenshot](jellyfish.png)
+[![Jellyfish screenshot](jellyfish.png)](http://zgrossbart.github.com/jelly)
