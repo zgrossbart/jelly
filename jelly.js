@@ -17,16 +17,16 @@ JELLYFISH.Jelly = function(idNumber, radius, resolution) {
 	 * We pick a color from this array based on the UI number
 	 * to be the color of the jellyfish.
 	 */
-	this.colours = [{s:"#1C4347", f:"#52b755"},
-					{s:"#000000", f:"#00aeef"},
-					{s:"#000000", f:"#ee2a33"},
-					{s:"#000000", f:"#ee5b32"},
-					{s:"#1b3b3a", f:"#d03c3a"},
-					{s:"#2d393f", f:"#F00FF0"},
-					{s:"#422b3a", f:"#fec01e"},
-					{s:"#5b263a", f:"#e0cb61"},
-					{s:"#580c23", f:"#f69c9f"},
-					{s:"#600B2C", f:"#157d6b"}];
+	this.colours = [{s:"#1C4347", f:"#52b755"},		// green 
+					{s:"#000000", f:"#00aeef"},		// blue
+					{s:"#000000", f:"#ee2a33"},		// red
+					{s:"#000000", f:"#ee5b32"},		// orange
+					{s:"#1b3b3a", f:"#d03c3a"},		// dark red
+					{s:"#2d393f", f:"#F00FF0"},		// light purple
+					{s:"#422b3a", f:"#fec01e"},		// yellow
+					{s:"#5b263a", f:"#e0cb61"},		// beige
+					{s:"#580c23", f:"#f69c9f"},		// pink
+					{s:"#000000", f:"#157d6b"}];	// dark green
 
 	this.pathStyle = {
 		strokeWidth: 3,
