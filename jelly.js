@@ -13,6 +13,10 @@ JELLYFISH.Jelly = function(idNumber, radius, resolution) {
 	this.pathPointsNormals = [this.pathSides];
 	this.group = new Group();
 
+	/*
+	 * We pick a color from this array based on the UI number
+	 * to be the color of the jellyfish.
+	 */
 	this.colours = [{s:"#1C4347", f:"#52b755"},
 					{s:"#000000", f:"#00aeef"},
 					{s:"#000000", f:"#ee2a33"},
@@ -50,7 +54,11 @@ JELLYFISH.Jelly = function(idNumber, radius, resolution) {
 		break;
 	}
 
-	//this.location = new Point(-50, Math.random() * view.size.height);
+	/* 
+	 * Now we initialize the rest of our variables.  We add a little 
+	 * randomness to the speed so that each jellyfish moves a bit
+	 * differently.
+	 */
 	this.velocity = new Point(0, 0);
 	this.acceleration = new Point(0, 0);
 	
@@ -61,15 +69,17 @@ JELLYFISH.Jelly = function(idNumber, radius, resolution) {
 	this.orientation = 0;
 	this.lastOrientation = 0;
 	this.numTentacles = 0;
-
-//     console.log("jelly idn: " + idNumber);
-//	 console.log("jelly max speed: " + this.maxSpeed);
-//	 console.log("jelly path radius: " + this.pathRadius);
-//	 console.log("---------------------------------------");
 };
 
-
+/*
+ * The init method figures out the location of the jellyfish
+ * and sets up the path that draws the jellyfish.  
+ */
 JELLYFISH.Jelly.prototype.init = function() {
+	/*
+	 * The first step is to draw the shape for the body of the jellyfish.
+	 * The body shape is like a very pointed arc with a flat bottom.  
+	 */
 	var theta = (Math.PI * 2) / this.pathSides;
     for (var i = 0; i < this.pathSides; i++) {
 		var angle = theta * i;
@@ -93,15 +103,26 @@ JELLYFISH.Jelly.prototype.init = function() {
 		this.pathPointsNormals[i] = point.normalize().clone();
 	}
 
+	/* 
+	 * We tell paper to close the path which makes it a connected solid shape.
+	 * We also tell paper to smooth the path which gives is a nicely curved
+	 * shape instead of making the jellyfish look angular.  We then set an
+	 * opacity on the path so that the jellyfish have a little bit of transparency
+	 * when the overlap. 
+	 */
 	this.path.closed = true;
 	this.path.smooth();
 	this.path.style = this.pathStyle;
-//    this.path.blendMode = "darken";
-	this.path.opacity = 0.8;
+	this.path.opacity = 0.85;
 	this.group.addChild(this.path);
 
 
-	// Create tentacles
+	/* 
+	 * Now we iterate through and create each tentacle.  The tentacles
+	 * have a random length and a random number of segments.  The segments
+	 * control how the tentacles undulate.  This makes them look organic
+	 * and a little separate from each other.
+	 */
 	this.tentacles = [this.numTentacles];
 	var segments = Math.floor(Math.random() * 12) + 6;
 	var length = Math.floor(Math.random() * 6) + 3;
@@ -113,7 +134,17 @@ JELLYFISH.Jelly.prototype.init = function() {
 	}
 };
 
-//--------------- ANIMATION ---------------
+/* 
+ * The update function is where we actually animate the jellyfish.  The main.js
+ * file keeps an array of jellyfish and calls the update function on each of them
+ * every time the canvas redraws.
+ * 
+ * We want the jellyfish to have some randomness in the path they move, but not
+ * complete randomness.  If they are completely random then they look like they 
+ * are just bouncing around the screen.  We want to choose a general path for them 
+ * and have them follow that path so it looks like they have some direction, but
+ * each jellyfish has a different path.
+ */
 JELLYFISH.Jelly.prototype.update = function(event) {
 	this.lastLocation = this.location.clone();
 	this.lastOrientation = this.orientation;
@@ -127,21 +158,23 @@ JELLYFISH.Jelly.prototype.update = function(event) {
 
 	this.acceleration.length = 0;
 
-	// this.path.position = this.location.clone();
 	this.group.position = this.location.clone();
 	
 
-	// Rotation alignment
+	/* 
+	 * First we want to rotate and align the jellyfish appropriately.
+	 */
 	var locVector = new Point(this.location.x - this.lastLocation.x,
 							  this.location.y - this.lastLocation.y);
 	this.orientation = locVector.angle + 90;
-	// this.path.rotate(this.orientation - this.lastOrientation);
 	this.group.rotate(this.orientation - this.lastOrientation);
 	
-	// Expansion Contraction
+	/* 
+	 * Then we want to deal with the expansion and contraction to make
+	 * the jellyfish look like it pulses as it swims.
+	 */
 	for (var i = 0; i < this.pathSides; i++) {
 		var segmentPoint = this.path.segments[i].point;
-		// var sineSeed = -(event.time * 3 + this.path.segments[i].point.y * 0.5);
 		var sineSeed = -((event.count * this.maxSpeed) + (this.pathPoints[i].y * 0.0375));
 		var normalRotatedPoint = this.pathPointsNormals[i].rotate(this.orientation);
 		
@@ -149,6 +182,9 @@ JELLYFISH.Jelly.prototype.update = function(event) {
 		segmentPoint.y += normalRotatedPoint.y * Math.sin(sineSeed);
 	}
 
+	/* 
+	 * Then we iterate through each tentacle and update it so it can redraw.
+	 */
 	for (var t = 0; t < this.numTentacles; t++) {
 		this.tentacles[t].anchor.point = this.path.segments[t+((t%this.numTentacles)+1)].point;
 		this.tentacles[t].update(this.orientation);
@@ -159,7 +195,13 @@ JELLYFISH.Jelly.prototype.update = function(event) {
 	this.checkBounds();
 };
 
-
+/*
+ * This helper function steers the jellyfish towards a specified target.
+ * The target is a Point and the slowdown a boolean indicating if the 
+ * jellyfish should change speed.  We change the speed from time to time 
+ * so we can make the jellyfish look like they are responding to their 
+ * environment.
+ */
 JELLYFISH.Jelly.prototype.steer = function(target, slowdown) {
 	var steer;
 	var desired	= new Point(target.x - this.location.x, target.y - this.location.y);
@@ -182,14 +224,19 @@ JELLYFISH.Jelly.prototype.steer = function(target, slowdown) {
 	return steer;
 };
 
-
+/* 
+ * The seek function calls steer and then updates the acceleration.
+ */
 JELLYFISH.Jelly.prototype.seek = function(target) {
 	var steer = this.steer(target, false);
 	this.acceleration.x += steer.x;
 	this.acceleration.y += steer.y;
 };
 
-
+/* 
+ * The wander function picks the next location for the jellyfish.
+ * Once it has the right location it calls the seek function.
+ */
 JELLYFISH.Jelly.prototype.wander = function() {
 	var wanderR = 5;
 	var wanderD	= 100;
@@ -219,7 +266,11 @@ JELLYFISH.Jelly.prototype.wander = function() {
 	this.seek(target);
 };
 
-
+/*
+ * This function handles it when the jellyfish swims off the edge of the 
+ * screen.  We need to stop the jellyfish at that point and reintroduce them
+ * at a different side of the screen.
+ */
 JELLYFISH.Jelly.prototype.checkBounds = function() {
 	var offset = 60;
 	var t = 0;
