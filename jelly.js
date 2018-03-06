@@ -1,5 +1,9 @@
 var JELLYFISH = JELLYFISH || {};
 
+/*
+ * This file handles the actual jellyfish.  It manages everything about the jellyfish, 
+ * how they move, and where they are positioned.
+ */
 JELLYFISH.Jelly = function(idNumber, radius, resolution) {
     this.idNumber = idNumber;
 	this.path = new Path();
@@ -9,8 +13,6 @@ JELLYFISH.Jelly = function(idNumber, radius, resolution) {
 	this.pathPointsNormals = [this.pathSides];
 	this.group = new Group();
 
-	// Colours courtesy of deliquescence:
-	// http://www.colourlovers.com/palette/38473/boy_meets_girl
 	this.colours = [{s:"#1C4347", f:"#52b755"},
 					{s:"#000000", f:"#00aeef"},
 					{s:"#000000", f:"#ee2a33"},
@@ -28,18 +30,22 @@ JELLYFISH.Jelly = function(idNumber, radius, resolution) {
 		fillColor: this.colours[idNumber].f
 	};
 	
-	var side = Math.floor(Math.random() * 4) + 1;
+	this.side = Math.floor(Math.random() * 4) + 1;
 	
 	
-	switch (side) {
+	switch (this.side) {
 	case 1: //left side
 		this.location = new Point(-50, Math.random() * view.size.height);
+		break;
 	case 2: //right side
-		this.location = new Point(view.size.width + 50, Math.random() * view.size.height);
+		this.location = new Point(view.size.width + 100, Math.random() * view.size.height);
+		break;
 	case 3: // top side
 		this.location = new Point(Math.random() * view.size.width, -50);
+		break;
 	case 4: //bottom side
-		this.location = new Point(Math.random() * view.size.width, view.size.height + 50);
+		this.location = new Point(Math.random() * view.size.width, view.size.height + 100);
+		break;
 	}
 
 	//this.location = new Point(-50, Math.random() * view.size.height);
@@ -52,16 +58,13 @@ JELLYFISH.Jelly = function(idNumber, radius, resolution) {
 	this.wanderTheta = 0;
 	this.orientation = 0;
 	this.lastOrientation = 0;
-	this.lastLocation;
-
-	this.tentacles;
 	this.numTentacles = 0;
 
 //     console.log("jelly idn: " + idNumber);
 //	 console.log("jelly max speed: " + this.maxSpeed);
 //	 console.log("jelly path radius: " + this.pathRadius);
 //	 console.log("---------------------------------------");
-}
+};
 
 
 JELLYFISH.Jelly.prototype.init = function() {
@@ -106,7 +109,7 @@ JELLYFISH.Jelly.prototype.init = function() {
 		this.tentacles[t].path.strokeColor = this.path.strokeColor;
 		this.tentacles[t].path.strokeWidth = this.path.strokeWidth;
 	}
-}
+};
 
 //--------------- ANIMATION ---------------
 JELLYFISH.Jelly.prototype.update = function(event) {
@@ -152,7 +155,7 @@ JELLYFISH.Jelly.prototype.update = function(event) {
 	this.path.smooth();
 	this.wander();
 	this.checkBounds();
-}
+};
 
 
 JELLYFISH.Jelly.prototype.steer = function(target, slowdown) {
@@ -175,14 +178,14 @@ JELLYFISH.Jelly.prototype.steer = function(target, slowdown) {
 		steer = new Point(0, 0);
 	}
 	return steer;
-}
+};
 
 
 JELLYFISH.Jelly.prototype.seek = function(target) {
 	var steer = this.steer(target, false);
 	this.acceleration.x += steer.x;
 	this.acceleration.y += steer.y;
-}
+};
 
 
 JELLYFISH.Jelly.prototype.wander = function() {
@@ -203,34 +206,43 @@ JELLYFISH.Jelly.prototype.wander = function() {
 	
 	var target = new Point(circleLocation.x + circleOffset.x, circleLocation.y + circleOffset.y);
 	
+	if (this.side === 2 || this.side === 4) {
+		/*
+		 * If the jellyfish start on the right side or bottom side then we 
+		 * want to make them swim toward the center from that side.
+		 */
+		target = new Point(circleLocation.x - circleOffset.x, circleLocation.y - circleOffset.y);
+	}
+	
 	this.seek(target);
-}
+};
 
 
 JELLYFISH.Jelly.prototype.checkBounds = function() {
 	var offset = 60;
+	var t = 0;
 	if (this.location.x < -offset) {
 		this.location.x = view.size.width + offset;
-		for (var t = 0; t < this.numTentacles; t++) {
+		for (t = 0; t < this.numTentacles; t++) {
 			this.tentacles[t].path.position = this.location.clone();
 		}
 	}
 	if (this.location.x > view.size.width + offset) {
 		this.location.x = -offset;
-		for (var t = 0; t < this.numTentacles; t++) {
+		for (t = 0; t < this.numTentacles; t++) {
 			this.tentacles[t].path.position = this.location.clone();
 		}
 	}
 	if (this.location.y < -offset) {
 		this.location.y = view.size.height + offset;
-		for (var t = 0; t < this.numTentacles; t++) {
+		for (t = 0; t < this.numTentacles; t++) {
 			this.tentacles[t].path.position = this.location.clone();
 		}
 	}
 	if (this.location.y > view.size.height + offset) {
 		this.location.y = -offset;
-		for (var t = 0; t < this.numTentacles; t++) {
+		for (t = 0; t < this.numTentacles; t++) {
 			this.tentacles[t].path.position = this.location.clone();
 		}
 	}
-}
+};

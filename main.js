@@ -1,5 +1,10 @@
 var JELLYFISH = JELLYFISH || {};
 
+/*
+ * This is out main object for the project.  It handles setting up Paper JS and
+ * adding the jellyfish to the page.  You can use this file to add more jellyfish,
+ * but be careful not to crassh your browser.
+ */
 JELLYFISH.Main = (function() {
 	
 	paper.install(window);
@@ -12,14 +17,20 @@ JELLYFISH.Main = (function() {
 	var jellies = [numJellies];
 	var jellyResolution = 16;
 
-
+	/* 
+	 * This connects our drawing routine to the PaperJS onFrame event.  That means
+	 * we'll get called every time the canvas redraws.
+	 */
 	window.onload = function() {
 		view.onFrame = draw;
 	};
 
-
+	/* 
+	 * Our draw function handles the actual ading the drawing of the jellyfish.
+	 */
 	this.draw = function(event) {
 		if (event.time > addJellyTimer + 3 && jellyCounter < numJellies) {
+			// We use some randomness to determine the jellyfish size so they all look different
 			jellySize = Math.random() * 5 + 60;
 			jellies[jellyCounter] = new JELLYFISH.Jelly(jellyCounter, jellySize, jellyResolution);
 			jellies[jellyCounter].init();
