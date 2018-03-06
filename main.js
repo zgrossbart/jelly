@@ -1,7 +1,6 @@
-var NARDOVE = NARDOVE || {};
+var JELLYFISH = JELLYFISH || {};
 
-NARDOVE.Main = (function() {
-	console.log("nardove.com started");
+JELLYFISH.Main = (function() {
 	
 	paper.install(window);
 	paper.setup("canvas");
@@ -22,7 +21,7 @@ NARDOVE.Main = (function() {
 	this.draw = function(event) {
 		if (event.time > addJellyTimer + 3 && jellyCounter < numJellies) {
 			jellySize = Math.random() * 5 + 60;
-			jellies[jellyCounter] = new NARDOVE.Jelly(jellyCounter, jellySize, jellyResolution);
+			jellies[jellyCounter] = new JELLYFISH.Jelly(jellyCounter, jellySize, jellyResolution);
 			jellies[jellyCounter].init();
             
 /*            jellies[jellyCounter].path.onMouseDown = function(event) {

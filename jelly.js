@@ -1,6 +1,6 @@
-var NARDOVE = NARDOVE || {};
+var JELLYFISH = JELLYFISH || {};
 
-NARDOVE.Jelly = function(idNumber, radius, resolution) {
+JELLYFISH.Jelly = function(idNumber, radius, resolution) {
     this.idNumber = idNumber;
 	this.path = new Path();
 	this.pathRadius = radius;
@@ -64,7 +64,7 @@ NARDOVE.Jelly = function(idNumber, radius, resolution) {
 }
 
 
-NARDOVE.Jelly.prototype.init = function() {
+JELLYFISH.Jelly.prototype.init = function() {
 	var theta = (Math.PI * 2) / this.pathSides;
     for (var i = 0; i < this.pathSides; i++) {
 		var angle = theta * i;
@@ -101,7 +101,7 @@ NARDOVE.Jelly.prototype.init = function() {
 	var segments = Math.floor(Math.random() * 12) + 6;
 	var length = Math.floor(Math.random() * 6) + 3;
 	for (var t = 0; t < this.numTentacles; t++) {
-		this.tentacles[t] = new NARDOVE.Tentacle(segments, length);
+		this.tentacles[t] = new JELLYFISH.Tentacle(segments, length);
 		this.tentacles[t].init();
 		this.tentacles[t].path.strokeColor = this.path.strokeColor;
 		this.tentacles[t].path.strokeWidth = this.path.strokeWidth;
@@ -109,7 +109,7 @@ NARDOVE.Jelly.prototype.init = function() {
 }
 
 //--------------- ANIMATION ---------------
-NARDOVE.Jelly.prototype.update = function(event) {
+JELLYFISH.Jelly.prototype.update = function(event) {
 	this.lastLocation = this.location.clone();
 	this.lastOrientation = this.orientation;
 
@@ -155,7 +155,7 @@ NARDOVE.Jelly.prototype.update = function(event) {
 }
 
 
-NARDOVE.Jelly.prototype.steer = function(target, slowdown) {
+JELLYFISH.Jelly.prototype.steer = function(target, slowdown) {
 	var steer;
 	var desired	= new Point(target.x - this.location.x, target.y - this.location.y);
 	var dist = desired.length;
@@ -178,14 +178,14 @@ NARDOVE.Jelly.prototype.steer = function(target, slowdown) {
 }
 
 
-NARDOVE.Jelly.prototype.seek = function(target) {
+JELLYFISH.Jelly.prototype.seek = function(target) {
 	var steer = this.steer(target, false);
 	this.acceleration.x += steer.x;
 	this.acceleration.y += steer.y;
 }
 
 
-NARDOVE.Jelly.prototype.wander = function() {
+JELLYFISH.Jelly.prototype.wander = function() {
 	var wanderR = 5;
 	var wanderD	= 100;
 	var change = 0.05;
@@ -207,7 +207,7 @@ NARDOVE.Jelly.prototype.wander = function() {
 }
 
 
-NARDOVE.Jelly.prototype.checkBounds = function() {
+JELLYFISH.Jelly.prototype.checkBounds = function() {
 	var offset = 60;
 	if (this.location.x < -offset) {
 		this.location.x = view.size.width + offset;

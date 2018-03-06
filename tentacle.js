@@ -1,6 +1,6 @@
-var NARDOVE = NARDOVE || {};
+var JELLYFISH = JELLYFISH || {};
 
-NARDOVE.Tentacle = function(segments, length) {
+JELLYFISH.Tentacle = function(segments, length) {
 	this.anchor = new Segment();
 	this.path = new Path();
 	this.numSegments = segments;
@@ -8,7 +8,7 @@ NARDOVE.Tentacle = function(segments, length) {
 }
 
 
-NARDOVE.Tentacle.prototype.init = function() {
+JELLYFISH.Tentacle.prototype.init = function() {
 	for (var i = 0; i < this.numSegments; i++) {
 		this.path.add(new Point(0, i * this.segmentLength));
 	}
@@ -17,7 +17,7 @@ NARDOVE.Tentacle.prototype.init = function() {
 }
 
 
-NARDOVE.Tentacle.prototype.update = function(orientation) {
+JELLYFISH.Tentacle.prototype.update = function(orientation) {
 	this.path.segments[1].point = this.anchor.point;
 
 	var dx = this.anchor.point.x - this.path.segments[1].point.x;
