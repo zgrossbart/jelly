@@ -14,11 +14,11 @@ html, body {
 #canvas {
 	margin: 0px;
 	padding: 0px;
-	/*pointer-events: none;*/
 	display: block;
 	position: absolute;
-	/*z-index: -1;*/
 	background-color: #fcfcfc;
+	width: 100%;
+	height: 100%;
 }
 
 
