@@ -9,6 +9,6 @@ This project is a great sample of complex animations using HTML canvas.  The cod
 If you want to play with it just clone the repository and open the `index.html` page in your favorite browser.
 
 
-You can also try it out live:  [zgrossbart.github.com/jelly](http://zgrossbart.github.com/jelly)
+You can also try it out live:  [zgrossbart.github.com/jelly](https://zgrossbart.github.io/jelly/)
 
-[![Jellyfish screenshot](jellyfish.png)](http://zgrossbart.github.com/jelly)
+[![Jellyfish screenshot](jellyfish.png)](https://zgrossbart.github.io/jelly/)
